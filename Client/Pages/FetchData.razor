@@ -1,0 +1,54 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<h1>ToDo List</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (todos == null)
+{
+    <p><em> loading </em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Popis </th>
+                <th> Splněno </th>
+                <th> Uložit </th>
+                <th> Odstranit </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var todo in (IEnumerable<ToDoItem>)todos)
+            {
+                <tr>
+                    <td> <input type="text" @bind="@todo.Description"> </td>
+                    <td> <input type="checkbox" @bind="@todo.IsComplete"> </td>
+                    <td> <button @onclick="async () => UpdateItem(todo)"> Uložit </button> </td>
+                    <td> <button> Odstranit </button> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ToDoItem>? todos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        todos = await Http.GetFromJsonAsync<List<ToDoItem>>("http://localhost:5183/api/ToDo");
+    }
+
+    protected async Task UpdateItem(ToDoItem item)
+    {
+        await Http.PutAsJsonAsync($"http://localhost:5183/api/ToDo/{item.Id}", item);
+    }
+
+    protected async Task DeleteItem(ToDoItem item){
+        await Http.DeleteAsync($"http://localhost:5183/api/ToDo/{item.Id}");
+    }
+         
+}
