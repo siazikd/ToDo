@@ -5,18 +5,18 @@ namespace ToDoAPI.Repository
 {
     public class ToDoRepository : IToDoRepository
     {
-        public async Task<bool> AddToDoItemAsync(ToDoItem item)
+        public async Task<ToDoItem> AddToDoItemAsync(ToDoItem item)
         {
             using(var db = new AppDbContext())
             {
                 try
                 {
                     var result = await db.ToDoItems.AddAsync(item);
-
-                    return await db.SaveChangesAsync() >= 1;
+                    await db.SaveChangesAsync();
+                    return result.Entity;
 
                 }catch(Exception) {
-                    return false;
+                    return null;
                 }
                
             }   
@@ -55,19 +55,20 @@ namespace ToDoAPI.Repository
             }
         }
 
-        public async Task<bool> UpdateToDoItemAsync(ToDoItem item)
+        public async Task<ToDoItem> UpdateToDoItemAsync(ToDoItem item)
         {
             using(var db = new AppDbContext())
             {
                 try
                 {
-                    db.ToDoItems.Update(item);
+                    var result = db.ToDoItems.Update(item);
+                    await db.SaveChangesAsync();
 
-                    return await db.SaveChangesAsync() >= 1;
+                    return result.Entity;
                 }
                 catch (Exception)
                 {
-                    return false;
+                    return null;
                 }
             }
         }

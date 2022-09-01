@@ -6,9 +6,9 @@ namespace ToDoAPI.Repository
     {
          Task<IEnumerable<ToDoItem>> GetToDoItemsAsync();
          Task<ToDoItem> GetToDoItemByIdAsync(int id);
-         Task<bool> AddToDoItemAsync(ToDoItem item);
+         Task<ToDoItem> AddToDoItemAsync(ToDoItem item);
 
-         Task<bool> UpdateToDoItemAsync(ToDoItem item );
+         Task<ToDoItem> UpdateToDoItemAsync(ToDoItem item );
          Task<bool> DeleteToDoItemAsync(int id);
 
 
