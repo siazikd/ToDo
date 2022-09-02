@@ -86,19 +86,16 @@ namespace ToDoAPI.Controllers
             }
         }
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<ToDoItem>> DeleteToDoItem(int id, ToDoItem item)
+        public async Task<ActionResult<ToDoItem>> DeleteToDoItem(int id)
         {
             try
             {
-                if (item == null || id != item.Id)
-                    return BadRequest();
-
-                var result = await _repository.GetToDoItemByIdAsync(item.Id);
+                var result = await _repository.GetToDoItemByIdAsync(id);
 
                 if (result == null)
                     return NotFound();
 
-                await _repository.DeleteToDoItemAsync(item.Id);
+                await _repository.DeleteToDoItemAsync(result.Id);
 
                 return Ok();
 

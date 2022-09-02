@@ -1,9 +1,31 @@
 ﻿@page "/fetchdata"
+
 @inject HttpClient Http
 
-<h1>ToDo List</h1>
+<div class="container">
+    <h1>ToDo List</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<div class="form-wrapper">
+    <h3>Add new ToDo</h3>
+
+    <form class="form" @onsubmit="async () => await AddItem()">
+        <div class="form-content">
+                        <div>
+                <label for="description" class="form-description-label">Description</label>
+                <input id="description" class="form-text" @bind="@description" placeholder="Shopping..."> 
+            </div>
+            <div>
+                <label for="checkbox" class="form-checkbox-label">Complete</label>
+                <input class="form-checkbox" id="checkbox" type="checkbox" @bind="@checkbox">
+            </div>
+            <div class="btn-send-div">
+                <button class="btn send"  type="submit" > Uložit </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 
 @if (todos == null)
 {
@@ -11,31 +33,41 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th> Popis </th>
-                <th> Splněno </th>
-                <th> Uložit </th>
-                <th> Odstranit </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var todo in (IEnumerable<ToDoItem>)todos)
-            {
+    <div class="content">
+
+        <h3>Your ToDos</h3>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td> <input type="text" @bind="@todo.Description"> </td>
-                    <td> <input type="checkbox" @bind="@todo.IsComplete"> </td>
-                    <td> <button @onclick="async () => UpdateItem(todo)"> Uložit </button> </td>
-                    <td> <button> Odstranit </button> </td>
+                    <th> Description </th>
+                    <th> Complete </th>
+                    <th> Save </th>
+                    <th> Delete </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var todo in (IEnumerable<ToDoItem>)todos)
+                {
+                    <tr>
+                        <td> <input class="text-table" type="text" @bind="@todo.Description"> </td>
+                        <td> <input class="checkbox-table" type="checkbox" @bind="@todo.IsComplete"> </td>
+                        <td> <button class="btn save" @onclick="async () => await UpdateItem(todo)"> Save </button> </td>
+                        <td> <button  class="btn delete" @onclick="async () => await DeleteItem(todo)"> Delete </button> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 }
+</div>
+
+
 
 @code {
     private List<ToDoItem>? todos;
+    private bool checkbox { get; set; }
+    private string description { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,6 +81,16 @@ else
 
     protected async Task DeleteItem(ToDoItem item){
         await Http.DeleteAsync($"http://localhost:5183/api/ToDo/{item.Id}");
+        todos.RemoveAll(x => item.Id == x.Id);
+
     }
-         
+
+    protected async Task AddItem()
+    {
+        var item = new ToDoItem() { Description = description, IsComplete = checkbox , Id=0};
+        var result = await Http.PostAsJsonAsync($"http://localhost:5183/api/ToDo", item);
+        var new_item = await result.Content.ReadFromJsonAsync<ToDoItem>();
+        todos.Add(new_item);
+    }
+
 }

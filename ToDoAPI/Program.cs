@@ -12,7 +12,7 @@ builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
-    builder.WithOrigins("https://localhost:7142").AllowAnyMethod().AllowAnyHeader());
+    builder.WithOrigins("https://localhost:7142").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 });
 
 var app = builder.Build();

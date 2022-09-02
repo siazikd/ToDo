@@ -1,62 +1,39 @@
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
+.menu {
+    width: 65%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-left: 35%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.top-row {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+.menu ul {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+
+
 }
 
-.navbar-brand {
-    font-size: 1.1rem;
+.menu li {
+    margin-top: 12%;
+    width: 80%;
+    height: 40px;
+    background-color: #dde0e2;
+    box-sizing: border-box;
+    line-height: 40px;
+    border-radius:10px;
+    position:relative;
 }
 
-.oi {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
+.menu li a {
+    font-size: 18px;
+    color: #323232;
+    text-decoration: none;
 }
 
-.nav-item {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
 
-    .nav-item:first-of-type {
-        padding-top: 1rem;
-    }
 
-    .nav-item:last-of-type {
-        padding-bottom: 1rem;
-    }
-
-    .nav-item ::deep a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
-
-.nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
-
-    .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-    }
-}
